@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mobile Bazar — Buy & Sell Mobile Phones</title>
+<meta name="description" content="Mobile Bazar is a fast, trusted marketplace to buy and sell new & used mobile phones." />
+<meta name="theme-color" content="#171a21" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --ink: #171a21; --ink-soft: #2b3040; --cloud: #f5f6f8; --white: #ffffff;
+  --steel: #6b7280; --steel-light: #9aa1ac; --line: #e7e9ed;
+  --signal: #0e9c93; --signal-dark: #0b7f78; --signal-tint: #e6f5f4;
+  --spark: #f5a623; --whatsapp: #25d366; --whatsapp-dark: #1ebe5b; --danger:#e05252;
+  --radius-s: 8px; --radius-m: 14px; --radius-l: 22px;
+  --shadow-card: 0 1px 2px rgba(23,26,33,.04), 0 8px 24px -12px rgba(23,26,33,.14);
+  --shadow-hover: 0 4px 10px rgba(23,26,33,.06), 0 16px 32px -12px rgba(23,26,33,.2);
+  --shadow-float: 0 10px 30px -6px rgba(14,156,147,.45);
+  --font-display:"Space Grotesk",sans-serif; --font-body:"Inter",sans-serif; --font-mono:"JetBrains Mono",monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,*::before,*::after { animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+body { margin:0; font-family:var(--font-body); background:var(--cloud); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; }
+img { max-width:100%; display:block; }
+a { color:inherit; text-decoration:none; }
+button { font-family:inherit; cursor:pointer; }
+:focus-visible { outline:2px solid var(--signal); outline-offset:2px; border-radius:4px; }
+.container { width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
+.visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* Header */
+.site-header { position:sticky; top:0; z-index:40; background:var(--white); border-bottom:1px solid var(--line); }
+.header-inner { height:68px; display:flex; align-items:center; gap:20px; }
+.brand { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.brand-mark { width:36px; height:36px; border-radius:10px; background:var(--ink); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.brand-text { display:flex; flex-direction:column; line-height:1.1; }
+.brand-name { font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em; }
+.brand-tagline { font-size:11px; color:var(--steel); font-weight:500; }
+.search-wrap { flex:1; max-width:560px; margin-left:auto; }
+.search-box { position:relative; display:flex; align-items:center; background:var(--cloud); border:1.5px solid var(--line); border-radius:999px; padding:0 6px 0 16px; transition:.15s; }
+.search-box:focus-within { border-color:var(--signal); background:var(--white); }
+.search-box svg { width:17px; height:17px; color:var(--steel-light); flex-shrink:0; }
+.search-input { flex:1; border:none; background:transparent; padding:11px 10px; font-size:14.5px; color:var(--ink); min-width:0; }
+.search-input:focus { outline:none; }
+.search-input::placeholder { color:var(--steel-light); }
+.search-clear { background:none; border:none; width:28px; height:28px; border-radius:50%; display:none; align-items:center; justify-content:center; color:var(--steel); flex-shrink:0; }
+.search-clear.show { display:flex; }
+.search-clear:hover { background:var(--line); }
+.header-cta { display:none; }
+@media (min-width:860px){ .header-cta{ display:inline-flex; align-items:center; gap:8px; background:var(--ink); color:var(--white); padding:10px 18px; border-radius:999px; font-size:13.5px; font-weight:600; white-space:nowrap; transition:.15s; } .header-cta:hover{ background:var(--signal-dark); transform:translateY(-1px); } }
+
+/* Announcement */
+.announcement { display:none; }
+.announcement.show { display:block; background:linear-gradient(90deg,var(--ink) 0%,var(--ink-soft) 100%); color:var(--white); animation:slideDown .35s ease both; }
+@keyframes slideDown { from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
+.announcement-inner { display:flex; align-items:center; gap:14px; padding:12px 20px; flex-wrap:wrap; }
+.announcement-image { display:none; width:34px; height:34px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+.announcement-image.show { display:block; }
+.announcement-dot { width:8px; height:8px; border-radius:50%; background:var(--spark); flex-shrink:0; box-shadow:0 0 0 4px rgba(245,166,35,.22); }
+.announcement-text { flex:1; min-width:200px; font-size:13.5px; }
+.announcement-title { font-weight:700; margin-right:6px; }
+.announcement-desc { color:#cfd3da; }
+.announcement-btn { flex-shrink:0; background:var(--spark); color:var(--ink); font-weight:700; font-size:12.5px; padding:7px 16px; border-radius:999px; transition:transform .15s ease; }
+.announcement-btn:hover { transform:translateY(-1px); }
+
+/* Ad slots */
+.ad-slot { height:0; overflow:hidden; }
+.ad-slot.filled { height:auto; margin:20px auto; }
+
+/* Sections */
+.section { padding:30px 0 8px; }
+.section-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px; }
+.section-title { font-family:var(--font-display); font-size:20px; font-weight:700; letter-spacing:-.01em; display:flex; align-items:center; gap:8px; }
+.section-title .dot { width:7px; height:7px; border-radius:50%; background:var(--signal); }
+.section-sub { font-size:12.5px; color:var(--steel); }
+
+.featured-rail { display:flex; gap:14px; overflow-x:auto; padding:4px 4px 14px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
+.featured-rail::-webkit-scrollbar { height:6px; }
+.featured-rail::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+.featured-rail .card { min-width:230px; max-width:230px; scroll-snap-align:start; }
+
+.ad-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+@media (min-width:640px){ .ad-grid{ grid-template-columns:repeat(3,1fr); gap:18px; } }
+@media (min-width:940px){ .ad-grid{ grid-template-columns:repeat(4,1fr); } }
+@media (min-width:1180px){ .ad-grid{ grid-template-columns:repeat(5,1fr); } }
+
+.card { background:var(--white); border-radius:var(--radius-m); overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow-card); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; display:flex; flex-direction:column; animation:cardIn .4s ease both; }
+@keyframes cardIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+.card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:transparent; }
+.card-media { position:relative; aspect-ratio:1/1; background:var(--cloud); overflow:hidden; }
+.card-media img { width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
+.card:hover .card-media img { transform:scale(1.05); }
+.card-badges { position:absolute; top:8px; left:8px; display:flex; gap:5px; }
+.badge { font-size:10px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:4px 8px; border-radius:999px; backdrop-filter:blur(4px); }
+.badge-featured { background:rgba(245,166,35,.92); color:var(--ink); }
+.badge-paid { background:rgba(23,26,33,.85); color:var(--white); }
+.card-body { padding:12px 12px 14px; display:flex; flex-direction:column; gap:6px; flex:1; }
+.card-price { font-family:var(--font-mono); font-weight:700; font-size:15.5px; color:var(--signal-dark); }
+.card-name { font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.card-meta { display:flex; align-items:center; gap:4px; font-size:11.5px; color:var(--steel); margin-top:auto; }
+.card-meta svg { width:12px; height:12px; flex-shrink:0; }
+.spec-chips { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
+.spec-chip { font-family:var(--font-mono); font-size:10px; font-weight:600; color:var(--steel); background:var(--cloud); border:1px solid var(--line); padding:2px 7px; border-radius:5px; letter-spacing:.01em; }
+.spec-chip.pta-yes { color:var(--signal-dark); background:var(--signal-tint); border-color:transparent; }
+
+.no-results { display:none; text-align:center; padding:60px 20px; color:var(--steel); }
+.no-results.show { display:block; }
+.no-results-title { font-family:var(--font-display); font-size:17px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+
+.skeleton-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+@media (min-width:640px){ .skeleton-grid{ grid-template-columns:repeat(3,1fr); gap:18px; } }
+@media (min-width:940px){ .skeleton-grid{ grid-template-columns:repeat(4,1fr); } }
+@media (min-width:1180px){ .skeleton-grid{ grid-template-columns:repeat(5,1fr); } }
+.skeleton-card { border-radius:var(--radius-m); overflow:hidden; background:var(--white); border:1px solid var(--line); }
+.skeleton-media { aspect-ratio:1/1; background:linear-gradient(100deg,var(--line) 30%,#f0f1f3 50%,var(--line) 70%); background-size:200% 100%; animation:shimmer 1.4s ease-in-out infinite; }
+.skeleton-line { height:10px; margin:12px; border-radius:4px; background:linear-gradient(100deg,var(--line) 30%,#f0f1f3 50%,var(--line) 70%); background-size:200% 100%; animation:shimmer 1.4s ease-in-out infinite; }
+.skeleton-line.short { width:50%; }
+@keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+.sell-fab { position:fixed; right:18px; bottom:22px; z-index:50; display:flex; align-items:center; gap:8px; background:var(--signal); color:var(--white); border:none; padding:13px 18px 13px 15px; border-radius:999px; font-weight:700; font-size:13.5px; box-shadow:var(--shadow-float); transition:transform .18s ease, box-shadow .18s ease, background .18s ease; animation:fabIn .5s cubic-bezier(.2,.8,.2,1) .3s both; }
+@keyframes fabIn { from{opacity:0; transform:scale(.6) translateY(10px);} to{opacity:1; transform:scale(1) translateY(0);} }
+.sell-fab:hover { background:var(--signal-dark); transform:translateY(-2px); box-shadow:0 14px 34px -6px rgba(14,156,147,.55); }
+.sell-fab svg { width:17px; height:17px; }
+
+.site-footer { margin-top:50px; background:var(--ink); color:#b7bcc6; padding:34px 0 90px; }
+.footer-inner { display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between; }
+.footer-brand { font-family:var(--font-display); color:var(--white); font-weight:700; font-size:15px; }
+.footer-note { font-size:12px; color:#7d8291; max-width:420px; line-height:1.6; }
+.footer-links { display:flex; gap:18px; font-size:12.5px; }
+.footer-links a { color:#b7bcc6; transition:color .15s ease; }
+.footer-links a:hover { color:var(--white); }
+@media (min-width:640px){ .site-footer{ padding-bottom:40px; } }
+
+/* Details modal (replaces a separate details page in this single-file build) */
+.modal-overlay { position:fixed; inset:0; background:rgba(23,26,33,.55); backdrop-filter:blur(2px); z-index:100; display:none; align-items:flex-start; justify-content:center; overflow-y:auto; padding:20px 14px 40px; }
+.modal-overlay.show { display:flex; animation:fadeIn .2s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.modal-card { background:var(--white); border-radius:var(--radius-l); max-width:920px; width:100%; margin-top:20px; overflow:hidden; animation:modalIn .25s cubic-bezier(.2,.8,.2,1); }
+@keyframes modalIn { from{opacity:0; transform:translateY(14px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+.modal-close { position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%; background:var(--white); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-card); z-index:2; }
+.modal-inner { position:relative; display:grid; grid-template-columns:1fr; }
+@media (min-width:760px){ .modal-inner{ grid-template-columns:1fr 1fr; } }
+.gallery-main { aspect-ratio:1/1; background:var(--cloud); overflow:hidden; }
+.gallery-main img { width:100%; height:100%; object-fit:cover; }
+.gallery-thumbs { display:flex; gap:8px; padding:10px 12px 0; }
+.gallery-thumb { width:52px; height:52px; border-radius:8px; overflow:hidden; border:2px solid transparent; background:var(--white); cursor:pointer; flex-shrink:0; padding:0; }
+.gallery-thumb.active { border-color:var(--signal); }
+.gallery-thumb img { width:100%; height:100%; object-fit:cover; }
+.modal-body { padding:22px 24px 26px; }
+.detail-price { font-family:var(--font-mono); font-size:28px; font-weight:700; color:var(--signal-dark); }
+.detail-name { font-family:var(--font-display); font-size:20px; font-weight:700; margin:4px 0 10px; }
+.detail-meta-row { display:flex; align-items:center; gap:14px; font-size:13px; color:var(--steel); margin-bottom:16px; flex-wrap:wrap; }
+.detail-meta-row span { display:flex; align-items:center; gap:5px; }
+.detail-meta-row svg { width:14px; height:14px; }
+.spec-table { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+.spec-item { background:var(--cloud); border:1px solid var(--line); border-radius:var(--radius-s); padding:10px 12px; }
+.spec-item .label { font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--steel-light); font-weight:600; margin-bottom:3px; }
+.spec-item .value { font-family:var(--font-mono); font-size:14px; font-weight:700; color:var(--ink); }
+.spec-item .value.yes { color:var(--signal-dark); }
+.spec-item .value.no { color:var(--danger); }
+.detail-desc { font-size:13.5px; color:var(--ink-soft); line-height:1.7; margin:16px 0; white-space:pre-line; }
+.seller-card { background:var(--cloud); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px; margin-top:8px; }
+.seller-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.seller-avatar { width:42px; height:42px; border-radius:50%; background:var(--signal-tint); color:var(--signal-dark); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--font-display); flex-shrink:0; }
+.seller-name { font-weight:700; font-size:14.5px; }
+.seller-sub { font-size:12px; color:var(--steel); }
+.whatsapp-btn { display:flex; align-items:center; justify-content:center; gap:9px; width:100%; background:var(--whatsapp); color:var(--white); font-weight:700; font-size:14.5px; padding:13px; border-radius:999px; transition:background .15s ease, transform .15s ease; }
+.whatsapp-btn:hover { background:var(--whatsapp-dark); transform:translateY(-1px); }
+.whatsapp-btn svg { width:19px; height:19px; }
+
+main { min-height:40vh; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="brand" aria-label="Mobile Bazar home" onclick="return false;">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="3" width="10" height="18" rx="2.2" stroke="#0e9c93" stroke-width="1.7"/>
+          <circle cx="12" cy="17.6" r="0.9" fill="#0e9c93"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name">Mobile Bazar</span>
+        <span class="brand-tagline">Buy &amp; Sell Phones</span>
+      </span>
+    </a>
+
+    <div class="search-wrap">
+      <label for="searchInput" class="visually-hidden">Search by mobile name, brand, or city</label>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input id="searchInput" class="search-input" type="text" placeholder="Search mobile, brand or city…" autocomplete="off" />
+        <button id="searchClear" class="search-clear" type="button" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <a href="#" id="headerSellBtn" class="header-cta" target="_blank" rel="noopener">Sell your phone</a>
+  </div>
+</header>
+
+<div id="announcement" class="announcement">
+  <div class="announcement-inner">
+    <img id="annImage" class="announcement-image" src="" alt="" />
+    <span class="announcement-dot"></span>
+    <p class="announcement-text">
+      <span class="announcement-title" id="annTitle"></span>
+      <span class="announcement-desc" id="annDesc"></span>
+    </p>
+    <a href="#" id="annBtn" class="announcement-btn" target="_blank" rel="noopener"></a>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+    <div id="topAdSlot" class="ad-slot" aria-hidden="true"></div>
+
+    <section class="section" id="featuredSection" style="display:none;">
+      <div class="section-head">
+        <h2 class="section-title"><span class="dot"></span>Featured Listings</h2>
+        <span class="section-sub">Handpicked &amp; boosted</span>
+      </div>
+      <div id="featuredRail" class="featured-rail"></div>
+    </section>
+
+    <div id="middleAdSlot" class="ad-slot" aria-hidden="true"></div>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title" id="listingTitle"><span class="dot"></span>All Listings</h2>
+        <span class="section-sub" id="listingCount"></span>
+      </div>
+
+      <div id="skeletonGrid" class="skeleton-grid"></div>
+      <div id="adGrid" class="ad-grid" style="display:none;"></div>
+
+      <div id="noResults" class="no-results">
+        <p class="no-results-title">No matching listings</p>
+        <p>Try a different phone name, brand, or city.</p>
+      </div>
+    </section>
+
+    <div id="bottomAdSlot" class="ad-slot" aria-hidden="true"></div>
+  </div>
+</main>
+
+<button id="sellFab" class="sell-fab" type="button">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+  Sell Phone
+</button>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">Mobile Bazar</div>
+      <p class="footer-note">A simple, fast place to buy and sell mobile phones near you. List your device in minutes and connect with buyers directly on WhatsApp.</p>
+    </div>
+    <nav class="footer-links">
+      <a href="#" id="footerSellBtn" target="_blank" rel="noopener">Post an Ad</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- Ad details modal (single-file build uses a modal instead of a separate page) -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <div class="modal-inner">
+      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div>
+        <div class="gallery-main"><img id="modalImg" src="" alt="" /></div>
+        <div class="gallery-thumbs" id="modalThumbs"></div>
+      </div>
+      <div class="modal-body">
+        <div id="modalBadges" style="display:flex;gap:8px;margin-bottom:8px;"></div>
+        <p class="detail-price" id="modalPrice"></p>
+        <h2 class="detail-name" id="modalName"></h2>
+        <div class="detail-meta-row">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.6 7-12a7 7 0 10-14 0c0 5.4 7 12 7 12z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span id="modalCity"></span>
+          </span>
+        </div>
+        <div class="spec-table" id="modalSpecs"></div>
+        <p class="detail-desc" id="modalDesc"></p>
+        <div class="seller-card">
+          <div class="seller-row">
+            <div class="seller-avatar" id="modalSellerInitial"></div>
+            <div>
+              <div class="seller-name" id="modalSellerName"></div>
+              <div class="seller-sub">Seller</div>
+            </div>
+          </div>
+          <a href="#" id="modalWhatsapp" class="whatsapp-btn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8.9 8.9 0 0 0 12 4a8.8 8.8 0 0 0-7.6 13.3L3 21l3.8-1.3A8.9 8.9 0 0 0 12 21a8.9 8.9 0 0 0 5.6-15.7ZM12 19.3a7.4 7.4 0 0 1-3.8-1l-.3-.2-2.6.9.9-2.5-.2-.3A7.4 7.4 0 1 1 19.4 12 7.4 7.4 0 0 1 12 19.3Zm4-5.5c-.2-.1-1.3-.6-1.5-.7s-.3-.1-.5.1-.6.7-.8.9-.3.2-.5.1a6 6 0 0 1-1.8-1.1 6.6 6.6 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.4l.4-.4.2-.4v-.4c0-.1-.5-1.2-.7-1.7s-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.8 2 4.7 4.7 0 0 0 1 2.5 10.6 10.6 0 0 0 4.1 3.6c.6.2 1 .4 1.4.5a3.3 3.3 0 0 0 1.5.1 2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3Z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   MOBILE BAZAR — SINGLE FILE BUILD
+   Everything (config, CSV fetch/parse, rendering) lives in this one file.
+   ========================================================================= */
+
+/* ---- 1. CONFIG — your real Google Sheet + Form details ---- */
+const CONFIG = {
+  SHEET_ID: "1Pivlyf4Q02tnbfsACCmkQ4NnXgDp-pv5YH4-o4H2n6Q",
+  ADS_SHEET_NAME: "Form Responses 1",
+  ANNOUNCEMENT_SHEET_NAME: "Sheet1",
+  SELL_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSdteeCphzlw6QbuTHnAK7g_2-u52Qp9VqkY-IZU4wbEhxyjlA/viewform?usp=header",
+  DEFAULT_WHATSAPP_MESSAGE: (name) => `Hi, I found your listing for "${name}" on Mobile Bazar. Is it still available?`,
+};
+CONFIG._sheetUrl = function (tabName) {
+  return `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&_=${Date.now()}`;
+};
+
+/* ---- 2. CSV parser + Google Sheet data layer (fails silently) ---- */
+const MobileBazarData = (() => {
+  function parseCSV(text) {
+    const rows = []; let row = []; let field = ""; let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i]; const next = text[i + 1];
+      if (inQuotes) {
+        if (char === '"' && next === '"') { field += '"'; i++; }
+        else if (char === '"') { inQuotes = false; }
+        else { field += char; }
+      } else {
+        if (char === '"') inQuotes = true;
+        else if (char === ",") { row.push(field); field = ""; }
+        else if (char === "\n" || char === "\r") {
+          if (char === "\r" && next === "\n") i++;
+          row.push(field); rows.push(row); row = []; field = "";
+        } else { field += char; }
+      }
+    }
+    if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+    return rows.filter((r) => r.some((c) => c.trim() !== ""));
+  }
+
+  function cleanCell(v) { return v === undefined || v === null ? "" : String(v).trim(); }
+  function normalizeHeader(h) { return h.trim().toLowerCase().replace(/\s+/g, " "); }
+
+  function rowsToObjects(rows) {
+    if (!rows.length) return [];
+    const headers = rows[0].map(normalizeHeader);
+    return rows.slice(1).map((r) => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = cleanCell(r[i]); });
+      return obj;
+    });
+  }
+
+  function isYes(v) { return String(v).trim().toLowerCase() === "yes"; }
+  function toNumberSafe(v) { const n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isNaN(n) ? 0 : n; }
+
+  /* Turns ANY common Google Drive share link format into one that actually
+     renders inside an <img> tag (Drive's "open?id=" and "/view" links are
+     for opening in a new tab, not for hotlinking — this fixes that). */
+  function normalizeDriveImage(url) {
+    if (!url) return url;
+    const trimmed = url.trim();
+    const patterns = [/\/file\/d\/([a-zA-Z0-9_-]+)/, /[?&]id=([a-zA-Z0-9_-]+)/];
+    for (const p of patterns) {
+      const m = trimmed.match(p);
+      if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000`;
+    }
+    return trimmed; // not a Drive link — leave it exactly as given
+  }
+
+  function normalizeWhatsapp(value) {
+    let digits = String(value || "").replace(/[^0-9]/g, "");
+    if (!digits) return "";
+    if (digits.startsWith("0")) digits = "92" + digits.slice(1);
+    else if (digits.length === 10 && digits.startsWith("3")) digits = "92" + digits;
+    return digits;
+  }
+
+  async function fetchTab(tabName) {
+    try {
+      const url = CONFIG._sheetUrl(tabName);
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) {
+        console.warn(`[Mobile Bazar] Could not reach tab "${tabName}" (HTTP ${res.status}). Check that the Google Sheet is shared as "Anyone with the link – Viewer".`);
+        return [];
+      }
+      const text = await res.text();
+      if (/^\s*<(!doctype|html)/i.test(text)) {
+        console.warn(`[Mobile Bazar] Tab "${tabName}" returned a login/permission page instead of data. Fix: open the Sheet → Share → set to "Anyone with the link – Viewer".`);
+        return [];
+      }
+      return rowsToObjects(parseCSV(text));
+    } catch (err) {
+      console.warn(`[Mobile Bazar] Network error while fetching tab "${tabName}":`, err);
+      return []; // never shown to end users — cards just silently don't appear
+    }
+  }
+
+  function mapAd(raw, rowIndex) {
+    return {
+      id: (raw["id"] || "").trim() || String(rowIndex + 1),
+      name: raw["mobile name"] || "",
+      brand: raw["brand"] || "",
+      model: raw["model"] || "",
+      price: toNumberSafe(raw["price"]),
+      ram: raw["ram"] || "",
+      rom: raw["rom"] || "",
+      pta: raw["pta approved"] || "",
+      condition: raw["condition"] || "",
+      city: raw["city"] || "",
+      sellerName: raw["seller name"] || "",
+      whatsapp: normalizeWhatsapp(raw["whatsapp number"]),
+      description: raw["description"] || "",
+      images: [raw["image 1"], raw["image 2"], raw["image 3"]]
+        .filter((v) => v && v.trim() !== "")
+        .map(normalizeDriveImage),
+      approved: isYes(raw["approved"]),
+      featured: isYes(raw["featured"]),
+      postType: (raw["post type"] || "Free").toLowerCase(),
+      order: rowIndex,
+    };
+  }
+
+  async function getAds() {
+    const raw = await fetchTab(CONFIG.ADS_SHEET_NAME);
+    if (!raw.length) return { all: [], featured: [], listing: [] };
+    const ads = raw.map((r, i) => mapAd(r, i)).filter((ad) => ad.approved && ad.name.trim() !== "");
+    const featured = ads.filter((ad) => ad.featured).sort((a, b) => b.order - a.order);
+    const rest = ads.filter((ad) => !ad.featured).sort((a, b) => {
+      const aPaid = a.postType === "paid" ? 1 : 0, bPaid = b.postType === "paid" ? 1 : 0;
+      if (aPaid !== bPaid) return bPaid - aPaid;
+      return b.order - a.order;
+    });
+    return { all: ads, featured, listing: rest };
+  }
+
+  async function getAnnouncement() {
+    const raw = await fetchTab(CONFIG.ANNOUNCEMENT_SHEET_NAME);
+    if (!raw.length) return null;
+    const active = raw.find((r) => isYes(r["active"]));
+    if (!active) return null;
+    return {
+      title: active["title"] || "",
+      description: active["description"] || "",
+      buttonText: active["button text"] || "",
+      buttonLink: active["button link"] || "",
+      image: normalizeDriveImage(active["image link"] || ""),
+    };
+  }
+
+  return { getAds, getAnnouncement };
+})();
+
+/* ---- 3. Small helpers ---- */
+function escapeHtml(str) {
+  return String(str || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function formatPrice(num) {
+  if (!num || num <= 0) return "Price on call";
+  return "Rs " + Math.round(num).toLocaleString("en-PK");
+}
+const PLACEHOLDER_IMG = "data:image/svg+xml," + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#F5F6F8"/><rect x="78" y="55" width="44" height="90" rx="8" fill="none" stroke="#D8DBE0" stroke-width="3"/><circle cx="100" cy="132" r="2.5" fill="#D8DBE0"/></svg>`
+);
+
+function cardHtml(ad) {
+  const img = ad.images[0] || PLACEHOLDER_IMG;
+  const badges = [];
+  if (ad.featured) badges.push('<span class="badge badge-featured">Featured</span>');
+  if (ad.postType === "paid") badges.push('<span class="badge badge-paid">Paid</span>');
+  return `
+    <a class="card" href="javascript:void(0)" onclick="openAdModal('${escapeHtml(ad.id)}')">
+      <div class="card-media">
+        ${badges.length ? `<div class="card-badges">${badges.join("")}</div>` : ""}
+        <img src="${escapeHtml(img)}" alt="${escapeHtml(ad.name)}" loading="lazy" onerror="this.src='${PLACEHOLDER_IMG}'" />
+      </div>
+      <div class="card-body">
+        <span class="card-price">${formatPrice(ad.price)}</span>
+        <span class="card-name">${escapeHtml(ad.name)}</span>
+        <div class="spec-chips">
+          ${ad.ram ? `<span class="spec-chip">${escapeHtml(ad.ram)} RAM</span>` : ""}
+          ${ad.rom ? `<span class="spec-chip">${escapeHtml(ad.rom)} ROM</span>` : ""}
+          ${ad.pta ? `<span class="spec-chip ${/yes/i.test(ad.pta) ? "pta-yes" : ""}">PTA ${/yes/i.test(ad.pta) ? "✓" : "✕"}</span>` : ""}
+        </div>
+        <span class="card-meta">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.6 7-12a7 7 0 10-14 0c0 5.4 7 12 7 12z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.6"/></svg>
+          ${escapeHtml(ad.city || "—")}
+        </span>
+      </div>
+    </a>`;
+}
+
+/* ---- 4. App state + rendering ---- */
+let allAds = { all: [], featured: [], listing: [] };
+
+const els = {
+  searchInput: document.getElementById("searchInput"),
+  searchClear: document.getElementById("searchClear"),
+  featuredSection: document.getElementById("featuredSection"),
+  featuredRail: document.getElementById("featuredRail"),
+  skeletonGrid: document.getElementById("skeletonGrid"),
+  adGrid: document.getElementById("adGrid"),
+  noResults: document.getElementById("noResults"),
+  listingTitle: document.getElementById("listingTitle"),
+  listingCount: document.getElementById("listingCount"),
+  announcement: document.getElementById("announcement"),
+  annTitle: document.getElementById("annTitle"),
+  annDesc: document.getElementById("annDesc"),
+  annBtn: document.getElementById("annBtn"),
+  annImage: document.getElementById("annImage"),
+  sellFab: document.getElementById("sellFab"),
+  headerSellBtn: document.getElementById("headerSellBtn"),
+  footerSellBtn: document.getElementById("footerSellBtn"),
+};
+
+function renderSkeletons(count) {
+  els.skeletonGrid.innerHTML = Array.from({ length: count }).map(() => `
+    <div class="skeleton-card">
+      <div class="skeleton-media"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+    </div>`).join("");
+}
+
+function wireSellButtons() {
+  const sellUrl = CONFIG.SELL_FORM_URL;
+  [els.sellFab, els.headerSellBtn, els.footerSellBtn].forEach((btn) => {
+    if (!btn) return;
+    if (btn.tagName === "A") btn.href = sellUrl;
+    else btn.addEventListener("click", () => window.open(sellUrl, "_blank", "noopener"));
+  });
+}
+
+function renderFeatured(list) {
+  if (!list.length) { els.featuredSection.style.display = "none"; return; }
+  els.featuredSection.style.display = "";
+  els.featuredRail.innerHTML = list.map(cardHtml).join("");
+}
+
+function renderGrid(list) {
+  els.skeletonGrid.style.display = "none";
+  if (!list.length) {
+    els.adGrid.style.display = "none";
+    els.noResults.classList.add("show");
+    return;
+  }
+  els.noResults.classList.remove("show");
+  els.adGrid.style.display = "";
+  els.adGrid.innerHTML = list.map(cardHtml).join("");
+}
+
+function applySearch(query) {
+  const q = query.trim().toLowerCase();
+  els.searchClear.classList.toggle("show", q.length > 0);
+
+  if (!q) {
+    els.listingTitle.innerHTML = '<span class="dot"></span>All Listings';
+    els.listingCount.textContent = allAds.listing.length ? `${allAds.listing.length} available` : "";
+    renderFeatured(allAds.featured);
+    renderGrid(allAds.listing);
+    return;
+  }
+
+  els.featuredSection.style.display = "none";
+  const matches = allAds.all.filter((ad) =>
+    ad.name.toLowerCase().includes(q) || ad.brand.toLowerCase().includes(q) || ad.city.toLowerCase().includes(q)
+  );
+  els.listingTitle.innerHTML = '<span class="dot"></span>Search Results';
+  els.listingCount.textContent = matches.length ? `${matches.length} found` : "";
+  renderGrid(matches);
+}
+
+els.searchInput.addEventListener("input", (e) => applySearch(e.target.value));
+els.searchClear.addEventListener("click", () => { els.searchInput.value = ""; applySearch(""); els.searchInput.focus(); });
+
+async function loadAnnouncement() {
+  const ann = await MobileBazarData.getAnnouncement();
+  if (!ann || (!ann.title && !ann.description)) return;
+  els.annTitle.textContent = ann.title ? ann.title + " —" : "";
+  els.annDesc.textContent = ann.description || "";
+  if (ann.image) { els.annImage.src = ann.image; els.annImage.alt = ann.title || "Announcement"; els.annImage.classList.add("show"); }
+  if (ann.buttonText && ann.buttonLink) { els.annBtn.textContent = ann.buttonText; els.annBtn.href = ann.buttonLink; }
+  else { els.annBtn.style.display = "none"; }
+  els.announcement.classList.add("show");
+}
+
+async function loadAds() {
+  renderSkeletons(10);
+  const data = await MobileBazarData.getAds();
+  if (!data.all.length) {
+    els.skeletonGrid.style.display = "none";
+    els.featuredSection.style.display = "none";
+    els.adGrid.style.display = "none";
+    els.noResults.classList.remove("show");
+    els.listingCount.textContent = "";
+    return;
+  }
+  allAds = data;
+  applySearch(els.searchInput.value || "");
+}
+
+/* ---- 5. Ad details modal ---- */
+function specRow(label, value, extraClass) {
+  if (!value) return "";
+  return `<div class="spec-item ${extraClass || ""}"><div class="label">${escapeHtml(label)}</div><div class="value">${escapeHtml(value)}</div></div>`;
+}
+
+function openAdModal(id) {
+  const ad = allAds.all.find((a) => String(a.id) === String(id));
+  if (!ad) return;
+
+  const images = ad.images.length ? ad.images : [PLACEHOLDER_IMG];
+  document.getElementById("modalImg").src = images[0];
+  document.getElementById("modalImg").alt = ad.name;
+
+  document.getElementById("modalThumbs").innerHTML = images.length > 1
+    ? images.map((img, i) => `
+      <button class="gallery-thumb ${i === 0 ? "active" : ""}" type="button" onclick="switchModalImage(this,'${escapeHtml(img)}')">
+        <img src="${escapeHtml(img)}" alt="" loading="lazy" />
+      </button>`).join("")
+    : "";
+
+  const badges = [];
+  if (ad.featured) badges.push('<span class="badge badge-featured">Featured</span>');
+  if (ad.postType === "paid") badges.push('<span class="badge badge-paid">Paid</span>');
+  document.getElementById("modalBadges").innerHTML = badges.join("");
+
+  document.getElementById("modalPrice").textContent = formatPrice(ad.price);
+  document.getElementById("modalName").textContent = ad.name;
+  document.getElementById("modalCity").textContent = ad.city || "—";
+
+  const ptaYes = /yes/i.test(ad.pta);
+  document.getElementById("modalSpecs").innerHTML = [
+    specRow("Brand", ad.brand),
+    specRow("Model", ad.model),
+    specRow("RAM", ad.ram),
+    specRow("ROM / Storage", ad.rom),
+    specRow("Condition", ad.condition),
+    ad.pta ? `<div class="spec-item"><div class="label">PTA Approved</div><div class="value ${ptaYes ? "yes" : "no"}">${ptaYes ? "Yes" : "No"}</div></div>` : "",
+  ].join("");
+
+  document.getElementById("modalDesc").textContent = ad.description || "No additional description provided.";
+  document.getElementById("modalSellerName").textContent = ad.sellerName || "Private Seller";
+  document.getElementById("modalSellerInitial").textContent = (ad.sellerName || "M").trim().charAt(0).toUpperCase();
+
+  const waBtn = document.getElementById("modalWhatsapp");
+  if (ad.whatsapp) {
+    const msg = CONFIG.DEFAULT_WHATSAPP_MESSAGE(ad.name);
+    waBtn.href = `https://wa.me/${ad.whatsapp}?text=${encodeURIComponent(msg)}`;
+    waBtn.style.display = "";
+  } else {
+    waBtn.style.display = "none";
+  }
+
+  document.getElementById("modalOverlay").classList.add("show");
+}
+
+function switchModalImage(btn, src) {
+  document.getElementById("modalImg").src = src;
+  document.querySelectorAll(".gallery-thumb").forEach((b) => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function closeModal() { document.getElementById("modalOverlay").classList.remove("show"); }
+document.getElementById("modalOverlay").addEventListener("click", (e) => { if (e.target.id === "modalOverlay") closeModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+/* ---- 6. Init ---- */
+wireSellButtons();
+loadAnnouncement();
+loadAds();
+</script>
+</body>
+</html>
